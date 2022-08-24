@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LoginBackend.Models;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LoginBackend.Controllers
 {
+    [EnableCors("AllowMyOrgin")]
     public class LoginController : Controller
     {
         public IActionResult Index()
@@ -9,15 +13,15 @@ namespace LoginBackend.Controllers
             return View();
         }
 
-        public bool LoginCheck(string username,string password)
+        public IActionResult LoginCheck([FromBody] LoginModel loginModel)
         {
-            if(username=="reshma" && password=="resh123")
+            if(loginModel.Username=="reshma" && loginModel.Password=="resh123")
             {
-                return true;
+                return Ok();
             }
             else
             {
-                return false;
+                return StatusCode(StatusCodes.Status401Unauthorized,"Wrong username and password");
             }
         }
     }
